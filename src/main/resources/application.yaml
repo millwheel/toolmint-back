@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/saas
+    url: jdbc:postgresql://localhost:5432/toolmint
     driver-class-name: org.postgresql.Driver
     username: season
     password: 1234

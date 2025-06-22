@@ -37,9 +37,9 @@ public class ProductService {
 
         var topics = topicRepository.findByIdIn(topicIds);
         var product = new Product(productRequest, topics);
-        productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
 
-        var statistic = new ProductViewStatistic(product);
+        var statistic = new ProductViewStatistic(savedProduct);
         productViewStatisticRepository.save(statistic);
     }
 

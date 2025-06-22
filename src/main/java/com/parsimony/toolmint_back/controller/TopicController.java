@@ -6,6 +6,7 @@ import com.parsimony.toolmint_back.dto.topic.TopicSummaryResponse;
 import com.parsimony.toolmint_back.entity.Topic;
 import com.parsimony.toolmint_back.entity.TopicQueryModel;
 import com.parsimony.toolmint_back.service.TopicService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +38,13 @@ public class TopicController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTopic(@RequestBody TopicRequest request) {
+    public void createTopic(@Valid @RequestBody TopicRequest request) {
         topicService.createTopic(request);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateTopic(@PathVariable Long id, @RequestBody TopicRequest request) {
+    public void updateTopic(@PathVariable Long id, @Valid @RequestBody TopicRequest request) {
         Topic topic = topicService.getTopic(id);
         topicService.updateTopic(topic, request);
     }

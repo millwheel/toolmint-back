@@ -46,6 +46,7 @@ public class Product extends BaseTimeEntity {
         this.description = productRequest.getDescription();
         this.websiteUrl = productRequest.getWebsiteUrl();
         this.topics = topics;
+        updateTopics(topics);
     }
 
     public void update(ProductRequest productRequest) {
@@ -56,8 +57,17 @@ public class Product extends BaseTimeEntity {
         this.websiteUrl = productRequest.getWebsiteUrl();
     }
 
-    public void updateTopics(Set<Topic> topics) {
-        this.topics = topics;
+    public void updateTopics(Set<Topic> newTopics) {
+        for (Topic topic : this.topics) {
+            topic.getProducts().remove(this);
+        }
+
+        this.topics.clear();
+
+        for (Topic topic : newTopics) {
+            this.topics.add(topic);
+            topic.getProducts().add(this); // 양방향 연관관계 유지
+        }
     }
 
 }

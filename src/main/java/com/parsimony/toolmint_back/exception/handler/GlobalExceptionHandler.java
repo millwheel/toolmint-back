@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResult handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
+        log.error("message: {}, position: {}", ex.getMessage(), getTopStackTrace(ex));
+        return new ErrorResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), request.getRequestURI());
+    }
+
     @ExceptionHandler(InvalidInputException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResult handleInvalidInputException(InvalidInputException ex, HttpServletRequest request) {

@@ -56,6 +56,7 @@ public class TopicService {
 
     @Transactional
     public void deleteTopic(Topic topic) {
+        // TODO topic이 하나밖에 없는 product가 있는 경우 해당 topic을 삭제하지 못하도록 로직 추가
         topicRepository.delete(topic);
     }
 }
