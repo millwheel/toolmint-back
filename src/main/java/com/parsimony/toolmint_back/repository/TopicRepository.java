@@ -12,10 +12,10 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     @Query("""
         SELECT new com.parsimony.toolmint_back.entity.TopicQueryModel(
-            t.id, t.code, t.name, t.emoji, COUNT(p)
+            t.id, t.code, t.name, t.emoji, COUNT(m)
         )
         FROM Topic t
-        LEFT JOIN t.products p
+        LEFT JOIN t.topicProductMappings m
         GROUP BY t.id, t.code, t.name, t.emoji
     """)
     List<TopicQueryModel> findAllQueryModel();
