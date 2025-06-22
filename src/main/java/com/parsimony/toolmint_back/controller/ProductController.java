@@ -3,6 +3,7 @@ package com.parsimony.toolmint_back.controller;
 
 import com.parsimony.toolmint_back.dto.product.ProductRequest;
 import com.parsimony.toolmint_back.dto.product.ProductResponse;
+import com.parsimony.toolmint_back.dto.product.ProductSummaryResponse;
 import com.parsimony.toolmint_back.entity.Product;
 import com.parsimony.toolmint_back.entity.ProductViewStatistic;
 import com.parsimony.toolmint_back.service.ProductService;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.parsimony.toolmint_back.util.UserRequestUtils.getClientIpAddress;
 import static com.parsimony.toolmint_back.util.UserRequestUtils.getUserAgent;
@@ -27,9 +30,12 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,
-                            @RequestParam(defaultValue = "10") int size) {
-        return productService.getProducts(page, size);
+    public List<ProductSummaryResponse> getProducts(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "10") int size) {
+        Page<Product> products = productService.getProducts(page, size);
+        return products.stream()
+                .map(ProductSummaryResponse::new)
+                .toList();
     }
 
     @GetMapping("/{id}")
