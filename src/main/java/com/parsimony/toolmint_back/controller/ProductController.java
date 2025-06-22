@@ -38,15 +38,15 @@ public class ProductController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductResponse getProduct(@PathVariable Long id,
+    public ProductResponse getProduct(@PathVariable String code,
                                       @RequestAttribute(name = "userId", required = false) String userId,
                                       HttpServletRequest request) {
 
         String ipAddress = getClientIpAddress(request);
         String userAgent = getUserAgent(request);
-        Product product = productService.getProduct(id);
+        Product product = productService.getProduct(code);
         productViewService.saveView(product, userId, ipAddress, userAgent);
         ProductViewStatistic stats = productViewService.getProductViewStatistic(product);
 
@@ -59,17 +59,17 @@ public class ProductController {
         productService.createProduct(productRequest);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateProduct(@PathVariable Long id,
+    public void updateProduct(@PathVariable String code,
                               @RequestBody ProductRequest productRequest) {
-        productService.updateProduct(id, productRequest);
+        productService.updateProduct(code, productRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    public void deleteProduct(@PathVariable String code) {
+        productService.deleteProduct(code);
     }
 
 }

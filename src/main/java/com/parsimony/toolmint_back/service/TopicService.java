@@ -24,9 +24,9 @@ public class TopicService {
         return topicRepository.findAllQueryModel();
     }
 
-    public Topic getTopic(Long id) {
-        return topicRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("topic", "id", id));
+    public Topic getTopic(String code) {
+        return topicRepository.findByCode(code)
+                .orElseThrow(() -> new DataNotFoundException("topic", "code", code));
     }
 
     @Transactional

@@ -33,9 +33,9 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Product getProduct(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("product", "id", id));
+    public Product getProduct(String code) {
+        return productRepository.findByCode(code)
+                .orElseThrow(() -> new DataNotFoundException("product", "code", code));
     }
 
     @Transactional
@@ -54,9 +54,9 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(Long id, ProductRequest productRequest) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("product", "id", id));
+    public void updateProduct(String code, ProductRequest productRequest) {
+        Product product = productRepository.findByCode(code)
+                .orElseThrow(() -> new DataNotFoundException("product", "code", code));
         List<Long> topicIds = productRequest.getTopicIds();
         Set<Topic> topics = topicIds == null || topicIds.isEmpty() ? Set.of() : topicRepository.findByIdIn(topicIds);
 
@@ -64,9 +64,9 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("product", "id", id));
+    public void deleteProduct(String code) {
+        Product product = productRepository.findByCode(code)
+                .orElseThrow(() -> new DataNotFoundException("product", "code", code));
 
         ProductViewStatistic statistic = productViewStatisticRepository.findByProduct(product)
                 .orElseThrow(() -> new DataNotFoundException("product view statistic", "product id", product.getCode()));

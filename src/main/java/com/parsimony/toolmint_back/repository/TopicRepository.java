@@ -4,8 +4,10 @@ import com.parsimony.toolmint_back.entity.Topic;
 import com.parsimony.toolmint_back.entity.TopicQueryModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface TopicRepository extends JpaRepository<Topic, Long> {
@@ -21,6 +23,8 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<TopicQueryModel> findAllQueryModel();
 
     Set<Topic> findByIdIn(List<Long> ids);
+
+    Optional<Topic> findByCode(String code);
 
     boolean existsByCode(String code);
 

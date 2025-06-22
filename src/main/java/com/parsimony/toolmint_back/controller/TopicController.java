@@ -29,10 +29,10 @@ public class TopicController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public TopicResponse getTopic(@PathVariable Long id) {
-        Topic topic = topicService.getTopic(id);
+    public TopicResponse getTopic(@PathVariable String code) {
+        Topic topic = topicService.getTopic(code);
         return new TopicResponse(topic);
     }
 
@@ -42,17 +42,17 @@ public class TopicController {
         topicService.createTopic(request);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateTopic(@PathVariable Long id, @Valid @RequestBody TopicRequest request) {
-        Topic topic = topicService.getTopic(id);
+    public void updateTopic(@PathVariable String code, @Valid @RequestBody TopicRequest request) {
+        Topic topic = topicService.getTopic(code);
         topicService.updateTopic(topic, request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTopic(@PathVariable Long id) {
-        Topic topic = topicService.getTopic(id);
+    public void deleteTopic(@PathVariable String code) {
+        Topic topic = topicService.getTopic(code);
         topicService.deleteTopic(topic);
     }
 }
