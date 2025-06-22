@@ -1,8 +1,11 @@
 package com.parsimony.toolmint_back.dto.product;
 
+import com.parsimony.toolmint_back.dto.topic.TopicProductResponse;
 import com.parsimony.toolmint_back.entity.Product;
 import com.parsimony.toolmint_back.entity.ProductViewStatistic;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ProductResponse {
@@ -14,6 +17,7 @@ public class ProductResponse {
     private String description;
     private String websiteUrl;
     private int totalViews;
+    private List<ProductTopicResponse> topics;
 
     public ProductResponse(Product product, ProductViewStatistic stats) {
         this.id = product.getId();
@@ -23,6 +27,9 @@ public class ProductResponse {
         this.description = product.getDescription();
         this.websiteUrl = product.getWebsiteUrl();
         this.totalViews = stats.getTotalViews();
+        this.topics = product.getTopicMappings().stream()
+                .map(mapping -> new ProductTopicResponse(mapping.getTopic()))
+                .toList();
     }
 
 }

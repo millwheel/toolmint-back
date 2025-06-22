@@ -1,4 +1,4 @@
-package com.parsimony.toolmint_back.dto.product;
+package com.parsimony.toolmint_back.dto.topic;
 
 import com.parsimony.toolmint_back.entity.Product;
 import lombok.Data;

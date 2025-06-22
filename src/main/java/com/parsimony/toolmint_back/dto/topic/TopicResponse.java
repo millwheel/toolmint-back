@@ -1,6 +1,5 @@
 package com.parsimony.toolmint_back.dto.topic;
 
-import com.parsimony.toolmint_back.dto.product.TopicProductResponse;
 import com.parsimony.toolmint_back.entity.Topic;
 import lombok.Data;
 
@@ -20,7 +19,8 @@ public class TopicResponse {
         this.code = topic.getCode();
         this.name = topic.getName();
         this.emoji = topic.getEmoji();
-        this.products = topic.getProducts().stream()
-                .map(TopicProductResponse::new).toList();
+        this.products = topic.getTopicProductMappings().stream()
+                .map(mapping -> new TopicProductResponse(mapping.getProduct()))
+                .toList();
     }
 }
