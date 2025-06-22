@@ -10,6 +10,7 @@ import com.parsimony.toolmint_back.service.ProductViewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,13 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductViewService productViewService;
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int size) {
+        return productService.getProducts(page, size);
+    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
