@@ -27,4 +27,11 @@ public class ProductViewLog extends BaseTimeEntity {
 
     private String userAgent;
 
+    public ProductViewLog(Product product, String userId, String ipAddress, String userAgent) {
+        this.productId = product.getId();
+        this.productName = product.getName();
+        this.userId = userId;
+        this.ipAddress = ipAddress;
+        this.userAgent = userAgent;
+    }
 }
