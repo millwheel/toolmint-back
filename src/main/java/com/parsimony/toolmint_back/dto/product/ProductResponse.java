@@ -1,6 +1,5 @@
 package com.parsimony.toolmint_back.dto.product;
 
-import com.parsimony.toolmint_back.dto.topic.TopicProductResponse;
 import com.parsimony.toolmint_back.entity.Product;
 import com.parsimony.toolmint_back.entity.ProductViewStatistic;
 import lombok.Data;
