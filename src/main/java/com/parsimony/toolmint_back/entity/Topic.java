@@ -27,8 +27,8 @@ public class Topic extends BaseTimeEntity {
     @Column(length = 10)
     private String emoji;
 
-    @ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)
-    private Set<Product> products = new HashSet<>();
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TopicProductMapping> topicMappings = new HashSet<>();
 
     public Topic(TopicRequest request) {
         this.code = request.getCode();

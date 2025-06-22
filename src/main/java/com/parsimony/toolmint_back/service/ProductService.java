@@ -3,6 +3,7 @@ package com.parsimony.toolmint_back.service;
 import com.parsimony.toolmint_back.dto.product.ProductRequest;
 import com.parsimony.toolmint_back.entity.Product;
 import com.parsimony.toolmint_back.entity.ProductViewStatistic;
+import com.parsimony.toolmint_back.entity.Topic;
 import com.parsimony.toolmint_back.exception.custom.DataNotFoundException;
 import com.parsimony.toolmint_back.exception.custom.InvalidInputException;
 import com.parsimony.toolmint_back.repository.ProductRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,11 +45,11 @@ public class ProductService {
             throw new InvalidInputException("topic ids should not be empty");
         }
 
-        var topics = topicRepository.findByIdIn(topicIds);
-        var product = new Product(productRequest, topics);
+        Set<Topic> topics = topicRepository.findByIdIn(topicIds);
+        Product product = new Product(productRequest, topics);
         Product savedProduct = productRepository.save(product);
 
-        var statistic = new ProductViewStatistic(savedProduct);
+        ProductViewStatistic statistic = new ProductViewStatistic(savedProduct);
         productViewStatisticRepository.save(statistic);
     }
 
@@ -55,7 +57,10 @@ public class ProductService {
     public void updateProduct(Long id, ProductRequest productRequest) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("product", "id", id));
-        product.update(productRequest);
+        List<Long> topicIds = productRequest.getTopicIds();
+        Set<Topic> topics = topicIds == null || topicIds.isEmpty() ? Set.of() : topicRepository.findByIdIn(topicIds);
+
+        product.update(productRequest, topics);
     }
 
     @Transactional

@@ -31,13 +31,8 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private String websiteUrl;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_topic",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "topic_id")
-    )
-    private Set<Topic> topics = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TopicProductMapping> topicMappings = new HashSet<>();
 
     public Product(ProductRequest productRequest, Set<Topic> topics) {
         this.code = productRequest.getCode();
@@ -45,28 +40,24 @@ public class Product extends BaseTimeEntity {
         this.summary = productRequest.getSummary();
         this.description = productRequest.getDescription();
         this.websiteUrl = productRequest.getWebsiteUrl();
-        this.topics = topics;
         updateTopics(topics);
     }
 
-    public void update(ProductRequest productRequest) {
+    public void update(ProductRequest productRequest, Set<Topic> topics) {
         this.code = productRequest.getCode();
         this.name = productRequest.getName();
         this.summary = productRequest.getSummary();
         this.description = productRequest.getDescription();
         this.websiteUrl = productRequest.getWebsiteUrl();
+        if (!topics.isEmpty()) {
+            updateTopics(topics);
+        }
     }
 
     public void updateTopics(Set<Topic> newTopics) {
-        for (Topic topic : this.topics) {
-            topic.getProducts().remove(this);
-        }
-
-        this.topics.clear();
-
+        topicMappings.clear();
         for (Topic topic : newTopics) {
-            this.topics.add(topic);
-            topic.getProducts().add(this); // 양방향 연관관계 유지
+            topicMappings.add(new TopicProductMapping(this, topic));
         }
     }
 
